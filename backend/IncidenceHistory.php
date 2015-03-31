@@ -2,11 +2,11 @@
 namespace edinc;
 
 require_once(__DIR__."/vendor/autoload.php");
-require_once(__DIR__."/Db.php");
+require_once(__DIR__."/Db/SelectQuery.php");
 
-class IncidenceHistorySql extends \Zend\Db\Sql\Select {
-    public function __construct($target) {
-        parent::__construct();
+class IncidenceHistory extends Db\SelectQuery {
+    public function __construct($adapter, $target) {
+        parent::__construct($adapter);
 
         $targetEdits = new \Zend\Db\Sql\Select();
         $targetEdits->columns(array("rev_page"));
@@ -15,25 +15,6 @@ class IncidenceHistorySql extends \Zend\Db\Sql\Select {
 
         $this->from("revision");
         $this->where->in("rev_page", $targetEdits);
-    }
-}
-
-class IncidenceHistory extends IncidenceHistorySql implements \IteratorAggregate {
-    private $adapter;
-
-    public function __construct($adapter, $target) {
-        $this->adapter = $adapter;
-        parent::__construct($target);
-    }
-
-    public function execute() {
-        $sql = new \Zend\Db\Sql\Sql($this->adapter);
-        $statement = $sql->prepareStatementForSqlObject($this);
-        return $statement->execute();
-    }
-
-    public function getIterator() {
-        return $this->execute();
     }
 }
 

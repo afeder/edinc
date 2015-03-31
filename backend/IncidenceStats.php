@@ -2,7 +2,7 @@
 namespace edinc;
 
 require_once(__DIR__."/IncidenceHistory.php");
-require_once(__DIR__."/Utility.php");
+require_once(__DIR__."/Db.php");
 
 class IncidenceStats extends IncidenceHistory {
     public function __construct($adapter, $target) {
