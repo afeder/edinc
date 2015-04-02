@@ -17,6 +17,11 @@ class SelectQuery extends \Zend\Db\Sql\Select implements \IteratorAggregate {
         return $statement->execute();
     }
 
+    public function getSqlString_() {
+        $sql = new \Zend\Db\Sql\Sql($this->adapter);
+        return $sql->getSqlStringForSqlObject($this);
+    }
+
     public function getIterator() {
         return $this->execute();
     }
