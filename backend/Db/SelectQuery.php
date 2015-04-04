@@ -25,6 +25,13 @@ class SelectQuery extends \Zend\Db\Sql\Select implements \IteratorAggregate {
     public function getIterator() {
         return $this->execute();
     }
+
+    public function toArray() {
+        $result = $this->execute();
+        $result->buffer();
+        $resultset = new \Zend\Db\ResultSet\ResultSet();
+        return $resultset->initialize($result)->toArray();
+    }
 }
 
 ?>
