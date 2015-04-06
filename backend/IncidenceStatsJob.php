@@ -13,11 +13,22 @@ class IncidenceStatsJob extends \edinc\Grid\JobAbstract {
         return "../results/".$this->target.".json";
     }
 
+    public function getResultPath() {
+        return __DIR__."/".$this->getRelativeResultPath();
+    }
+
+    public function run($wait = false) {
+        $resultpath = $this->getResultPath();
+        if (file_exists($resultpath))
+            unlink($resultpath);
+        parent::run($wait);
+    }
+
     protected function getOptions() {
         return array("-N","IncidenceStatsJob",
                      "-mem","1g",
                      "-sync","y",
-                     "-o",__DIR__."/".$this->getRelativeResultPath(),
+                     "-o",$this->getResultPath(),
                      );
     }
 
