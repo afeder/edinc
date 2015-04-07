@@ -37,7 +37,7 @@ class IncidenceStatsJob extends \edinc\Grid\JobAbstract {
     }
 
     protected function getArgs() {
-        return array($this->target);
+        return array(urlencode($this->target));
     }
 
     protected function getEnvs() {

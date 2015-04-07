@@ -6,7 +6,7 @@ require_once(__DIR__."/../Db/Adapter.php");
 require_once(__DIR__."/../IncidenceStats.php");
 
 $adapter = new \edinc\Db\Adapter($_SERVER["HOME"]."/replica.my.cnf", "enwiki");
-$query = new \edinc\IncidenceStats($adapter, $argv[1]);
+$query = new \edinc\IncidenceStats($adapter, urldecode($argv[1]));
 $query->order(array("IncidentArticlesCount DESC",
                     "IncidentEditsCount DESC",
                     "rev_user_text ASC"
