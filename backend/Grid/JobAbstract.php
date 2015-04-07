@@ -15,7 +15,7 @@ abstract class JobAbstract {
                         );
         $handle = popen(__DIR__."/../DispatchJob.py", "w");
         fwrite($handle, json_encode($output));
-        fclose($handle);
+        pclose($handle);
     }
 }
 

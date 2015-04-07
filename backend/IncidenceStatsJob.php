@@ -17,18 +17,9 @@ class IncidenceStatsJob extends \edinc\Grid\JobAbstract {
         return __DIR__."/".$this->getRelativeResultPath();
     }
 
-    public function run($wait = false) {
-        $resultpath = $this->getResultPath();
-        if (file_exists($resultpath))
-            unlink($resultpath);
-        parent::run($wait);
-    }
-
     protected function getOptions() {
-        return array("-N","IncidenceStatsJob",
-                     "-mem","1g",
-                     "-sync","y",
-                     "-o",$this->getResultPath(),
+        return array("-mem","1g",
+                     "-sync","y"
                      );
     }
 

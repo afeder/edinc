@@ -7,7 +7,8 @@ class Result implements \IteratorAggregate {
     protected $data;
 
     function __construct(\edinc\File\RealPath $jsonfile) {
-        $this->data = json_decode(file_get_contents($jsonfile));
+        if (file_exists($jsonfile))
+            $this->data = json_decode(file_get_contents($jsonfile));
     }
 
     public function getIterator() {

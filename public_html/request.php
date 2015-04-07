@@ -32,11 +32,10 @@ request.onload = function(e) {
     }
 }
 request.send(null);
-
 <?php
 $resultsdb = new \edinc\Results\ResultsDatabase();
 if ($result = $resultsdb->GetResult(new \edinc\Editor\Username($_GET["target"]))) {
-    print $result->getJsVar("cachedResult");
+    print PHP_EOL.$result->getJsVar("cachedResult");
 }
 ?>
     </script>
