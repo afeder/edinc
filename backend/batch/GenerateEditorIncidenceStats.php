@@ -13,7 +13,7 @@ $query->order(array("IncidentArticlesCount DESC",
                     "IncidentEditsCount DESC",
                     "rev_user_text ASC"
                     ));
-$query->limit(5);
+$query->limit(10);
 
 $result = json_encode($query->toArray());
 file_put_contents(__DIR__."/../../results/".basename($target).".json", $result);

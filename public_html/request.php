@@ -5,9 +5,18 @@ require_once(__DIR__."/../backend/Editor/Username.php");
 <html>
   <head>
     <title>edinc</title>
+    <link rel="stylesheet" type="text/css" href="stylesheet/main.css">
+  </head>
+  <body>
+    <div id="content" class="mw-body">
+      <div id="bodyContent" class="mw-body-content">
+        <h2><?= $_GET["target"] ?></h2>
+        <div id="resultDiv"/>
+      </div>
+    </div>
     <script>
 function generateTable(result) {
-    var div = document.getElementById("resultdiv");
+    var div = document.getElementById("resultDiv");
     div.innerHTML = "";
     var table = document.createElement("TABLE");
     for (var i=0; i < result.length; i++) {
@@ -36,22 +45,11 @@ request.send(null);
 $resultsdb = new \edinc\Results\ResultsDatabase();
 if ($result = $resultsdb->GetResult(new \edinc\Editor\Username($_GET["target"]))) {
     print PHP_EOL.$result->getJsVar("cachedResult");
+?>
+generateTable(cachedResult);
+<?php
 }
 ?>
     </script>
-  </head>
-<?php
-if ($result) {
-?>
-  <body onload="generateTable(cachedResult)">
-<?php
-} else {
-?>
-  <body>
-<?php
-}
-?>
-    <h3><?= $_GET["target"] ?></h3>
-    <div id="resultdiv"/>
   </body>
 </html>
