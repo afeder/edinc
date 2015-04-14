@@ -1,7 +1,5 @@
 <?php
 require_once(__DIR__."/MwTemplate.php");
-require_once(__DIR__."/../../backend/Results/ResultsDatabase.php");
-require_once(__DIR__."/../../backend/Editor/Username.php");
 
 class FormPage extends MwTemplate {
     function execBodyContent() {
@@ -11,7 +9,7 @@ class FormPage extends MwTemplate {
             <input type="text" name="userpage"/><br/>
             <p><i>or</i></p>
             Site:<br/>
-            <input type="text" name="site"/><br/>
+            <input type="text" name="wikiname"/><br/>
             Username:<br/>
             <input type="text" name="username"/><br/>
             <p/>

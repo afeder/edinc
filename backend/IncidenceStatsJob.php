@@ -1,16 +1,17 @@
 <?php
 
 require_once(__DIR__."/Grid/JobAbstract.php");
+require_once(__DIR__."/Db/User.php");
 
 class IncidenceStatsJob extends \edinc\Grid\JobAbstract {
     protected $target;
 
-    function __construct($target) {
+    function __construct(\edinc\Db\User $target) {
         $this->target = $target;
     }
 
     public function getRelativeResultPath() {
-        return "../results/".$this->target.".json";
+        return "../results/".(string)$this->target->wikiname."/".(string)$this->target->username.".json";
     }
 
     public function getResultPath() {
@@ -28,7 +29,7 @@ class IncidenceStatsJob extends \edinc\Grid\JobAbstract {
     }
 
     protected function getArgs() {
-        return array(urlencode($this->target));
+        return array(urlencode((string)$this->target->wikiname), urlencode((string)$this->target->username));
     }
 
     protected function getEnvs() {

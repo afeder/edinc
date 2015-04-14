@@ -1,32 +1,25 @@
 <?php
 namespace edinc\File;
 
-class RealPath {
-    protected $realpath;
+require(__DIR__."/Path.php");
 
-    function __construct($path) {
-        $this->realpath = realpath($path);
+class RealPath extends Path {
+    function __construct($string) {
+        parent::__construct(realpath($string));
     }
 
-    public function getPath() {
-        return $this->realpath;
+    public function realJoin(Path $addpath) {
+        return new RealPath($this->join($addpath)->getString());
     }
 
-    public function getDirname() {
-        return dirname($this->realpath);
-    }
-
-    public function exists() {
-        return file_exists($this->realpath);
-    }
-
-    public function join($addpath) {
-        $path = realpath(join(DIRECTORY_SEPARATOR, array($this->realpath, $addpath)));
-        return new RealPath($path);
-    }
-
-    public function __toString() {
-        return $this->realpath;
+    public function descend(Path $descpath) {
+        if ($next = $this->realJoin($descpath->shift())) {
+            if ($this->isDirOf($next) && $descpath->count()) {
+                return $next->descend($descpath);
+            } else {
+                return $next;
+            }
+        }
     }
 }
 
