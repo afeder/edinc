@@ -1,17 +1,23 @@
 <?php
 namespace edinc\Db;
 
+require_once(__DIR__."/../File/Directory.php");
+require_once(__DIR__."/../File/Path.php");
 require_once(__DIR__."/Wikiname.php");
 
 class Wikihost {
-    protected $host;
+    protected $hostname;
+    protected $filepath;
 
-    function __construct($host) {
-        $this->host = basename($host);
+    function __construct($hostname) {
+        $this->hostname = $hostname;
+        $hostsdir = new \edinc\File\Directory(__DIR__."/../../wikis/host");
+        $subpath = new \edinc\File\Path(basename($this->hostname));
+        $this->filepath = $hostsdir->realJoin($subpath);
     }
 
-    public function getValue() {
-        return $this->host;
+    public function getHostname() {
+        return $this->hostname;
     }
 
     public function __toString() {
@@ -19,7 +25,7 @@ class Wikihost {
     }
 
     public function getWikiname() {
-        $name = basename(readlink(__DIR__."/../../wikis/host/".$this->getValue()));
+        $name = basename($this->filepath->getString());
         return new Wikiname($name);
     }
 }

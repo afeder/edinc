@@ -1,30 +1,19 @@
 <?php
 require_once(__DIR__."/MwTemplate.php");
 require_once(__DIR__."/../../backend/Results/ResultsDatabase.php");
-require_once(__DIR__."/../../backend/Db/Wikihost.php");
-require_once(__DIR__."/../../backend/Db/User.php");
+require_once(__DIR__."/../../backend/Db/Userpage.php");
 require_once(__DIR__."/../../backend/Db/Wikiname.php");
 require_once(__DIR__."/../../backend/Db/Username.php");
+require_once(__DIR__."/../../backend/Db/User.php");
 
 class ResultsPage extends MwTemplate {
     protected $target;
 
     function __construct($rq_userpage, $rq_wikiname, $rq_username) {
         if ($rq_userpage) {
-            if ($host = parse_url($rq_userpage, PHP_URL_HOST)) {
-                $wikihost = new \edinc\Db\Wikihost($host);
-                $wikiname = $wikihost->getWikiname();
-                $path = explode("/", parse_url($rq_userpage, PHP_URL_PATH), 3);
-                if ($path[1] == "wiki") {
-                    $article = explode("/", $path[2]);
-                    $top = explode(":", $article[0]);
-                    if (isset($article[1]))
-                        $url_username = $article[1];
-                    elseif ($top[1])
-                        $url_username = $top[1];
-                    $username =  new \edinc\Db\Username(str_replace("_", " ", $url_username));
-                }
-            }
+            $userpage = new \edinc\Db\Userpage($rq_userpage);
+            $wikiname = $userpage->getUser()->getWikiname();
+            $username = $userpage->getUser()->getUsername();
         } elseif ($rq_username) {
             $username = new \edinc\Db\Username($rq_username);
             if ($rq_wikiname)

@@ -15,8 +15,7 @@ class ResultsDatabase {
     }
 
     public function GetResult(\edinc\Db\User $target) {
-        $path = $this->GetResultPath($target);
-        if ($path->exists())
+        if ($path = $this->GetResultPath($target))
             return new Result($path);
     }
 

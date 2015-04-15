@@ -13,6 +13,10 @@ class Path implements \Countable {
         return count($this->components);
     }
 
+    public function pop() {
+        return new Path(array_pop($this->components));
+    }
+
     public function shift() {
         return new Path(array_shift($this->components));
     }

@@ -14,10 +14,11 @@ class RealPath extends Path {
 
     public function descend(Path $descpath) {
         if ($next = $this->realJoin($descpath->shift())) {
-            if ($this->isDirOf($next) && $descpath->count()) {
-                return $next->descend($descpath);
-            } else {
-                return $next;
+            if ($this->isDirOf($next)) {
+                if ($descpath->count())
+                    return $next->descend($descpath);
+                else
+                    return $next;
             }
         }
     }

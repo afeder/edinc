@@ -6,7 +6,7 @@ class Username {
 
     function __construct($username) {
         //TODO: Sanitize, validate.
-        $this->username = basename($username);
+        $this->username = $username;
     }
 
     public function getValue() {

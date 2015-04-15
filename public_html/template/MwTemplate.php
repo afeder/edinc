@@ -11,6 +11,7 @@ abstract class MwTemplate {
 ?>
 <html>
   <head>
+    <meta charset="UTF-8">
     <title><?= $this->pageTitle ?></title>
 <?php if ($this->useInlineStylesheet) { ?>
     <link rel="stylesheet" type="text/css" href="stylesheet/main.css">
