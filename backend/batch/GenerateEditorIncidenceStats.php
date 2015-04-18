@@ -7,8 +7,10 @@ require_once(__DIR__."/../Db/Wikiname.php");
 require_once(__DIR__."/../Db/Username.php");
 require_once(__DIR__."/../IncidenceStats.php");
 
-$target = array("dbname"=>new \edinc\Db\Wikiname(urldecode($argv[1])),
-                "username"=>new \edinc\Db\Username(urldecode($argv[2])));
+$input = json_decode(file_get_contents("php://stdin"));
+$target = array("dbname"=>new \edinc\Db\Wikiname($input->dbname),
+                "username"=>new \edinc\Db\Username($input->username)
+                );
 
 $adapter = new \edinc\Db\Adapter($_SERVER["HOME"]."/replica.my.cnf", $target["dbname"]);
 $query = new \edinc\IncidenceStats($adapter, $target["username"]);
@@ -19,13 +21,15 @@ $query->order(array("IncidentArticlesCount DESC",
 $query->limit(10);
 
 $result = $query->toArray();
+$resultjson = json_encode($result);
 if (count($result)) {
     $dir = __DIR__."/../../results/".(string)$target["dbname"];
     if (!is_dir($dir)) {
         mkdir($dir, 0777, true);
     }
-    
-    file_put_contents($dir."/".$target["username"].".json", json_encode($result));
+
+    file_put_contents($dir."/".$target["username"].".json", $resultjson);
 }
+print $resultjson;
 
 ?>

@@ -1,0 +1,2 @@
+#Directory for temporary files when the tool is in production use. Should be kept empty in the development repository.
+*
