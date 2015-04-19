@@ -9,24 +9,35 @@ require_once(__DIR__."/Username.php");
 class Userpage {
     protected $user;
 
+    protected function fetchData($url) {
+        return json_decode(file_get_contents($url));
+    }
+
     function __construct($url) {
         if ($host = parse_url($url, PHP_URL_HOST)) {
             if ($wikihost = new \edinc\Db\Wikihost($host)) {
                 $path = explode("/", parse_url($url, PHP_URL_PATH), 3);
                 if ($path[1] == "wiki") {
                     $title = $path[2];
-                    $response = json_decode(file_get_contents("https://".$wikihost->getHostname()."/w/api.php?action=query&prop=pageprops&format=json&titles=".$title));
-                    $pageprops = reset($response->query->pages);
-                    $title_div = explode("/", $pageprops->title);
-                    if ($pageprops->ns == 2) {
-                        $top_div = explode(":", $title_div[0]);
-                        $title_username = $top_div[1];
-                    } elseif ($pageprops->ns == -1) {
-                        $response = json_decode(file_get_contents("https://".$wikihost->getHostname()."/w/api.php?action=query&prop=pageprops&format=json&titles=Special:Contributions/".$title_div[1]));
+                    $response = $this->fetchData("https://".$wikihost->getHostname()."/w/api.php?action=query&prop=pageprops&format=json&titles=".rawurlencode($title));
+                    if (isset($response->query->pages)) {
                         $pageprops = reset($response->query->pages);
-                        if ($pageprops->title == $title) {
-                            $title_div = explode("/", $pageprops->title);
-                            $title_username = $title_div[1];
+                        $title = $pageprops->title;
+                        $title_div = explode("/", $title);
+                        switch ($pageprops->ns) {
+                            case 2:
+                            case 3:
+                                $top_div = explode(":", $title_div[0]);
+                                $title_username = $top_div[1];
+                                break;
+                            case -1:
+                                $response = $this->fetchData("https://".$wikihost->getHostname()."/w/api.php?action=query&prop=pageprops&format=json&titles=Special:Contributions/".rawurlencode($title_div[1]));
+                                $pageprops = reset($response->query->pages);
+                                if ($pageprops->title == $title) {
+                                    $title_div = explode("/", $pageprops->title);
+                                    $title_username = $title_div[1];
+                                }
+                                break;
                         }
                     }
 
@@ -43,7 +54,7 @@ class Userpage {
     }
 
     public function getJson() {
-        $userobj = (object)array("wikiname" => $this->user->getWikiname()->getValue(),
+        $userobj = (object)array("dbname" => $this->user->getWikiname()->getValue(),
                                  "username" => $this->user->getUsername()->getValue());
         return(json_encode($userobj));
     }
