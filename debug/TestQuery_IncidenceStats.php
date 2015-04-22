@@ -5,7 +5,7 @@ require_once(__DIR__."/../backend/Db/Username.php");
 require_once(__DIR__."/../backend/IncidenceStats.php");
 
 $target = array("dbname"=>new \edinc\Db\Wikiname("enwiki"),
-                "username"=>new \edinc\Db\Username("Test")
+                "username"=>new \edinc\Db\Username("Test~enwiki")
                 );
 
 $adapter = new \edinc\Db\Adapter($_SERVER["HOME"]."/replica.my.cnf", $target["dbname"]);
