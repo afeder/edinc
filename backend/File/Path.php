@@ -38,17 +38,21 @@ class Path implements \Countable {
         return $this->getString() === $string;
     }
 
-    public function isDirOf($path) {
+    public function isDirOf(Path $path) {
         return $this->equalsStr($path->getDirPath()->getString());
     }
 
-    public function isOnPathOf($path) {
+    public function isOnPathOf(Path $path) {
         return $this->equalsStr(substr($path->getString(), 0, strlen($this->getString())));
     }
 
-    public function join($addpath) {
+    public function join(Path $addpath) {
         $string = join(DIRECTORY_SEPARATOR, array($this->getString(), $addpath->getString()));
         return new Path($string);
+    }
+
+    public function joinStr($pathstr) {
+        return $this->join(new Path($pathstr));
     }
 
     public function __toString() {
