@@ -1,7 +1,7 @@
 <?php
 namespace edinc\File;
 
-require(__DIR__."/Path.php");
+require_once(__DIR__."/Path.php");
 
 class RealPath extends Path {
     function __construct($string) {
@@ -21,6 +21,10 @@ class RealPath extends Path {
                     return $next;
             }
         }
+    }
+
+    public function descendStr($descpathstr) {
+        return $this->descend(new Path($descpathstr));
     }
 }
 

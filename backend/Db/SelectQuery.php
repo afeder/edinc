@@ -6,7 +6,7 @@ require_once(__DIR__."/../vendor/autoload.php");
 class SelectQuery extends \Zend\Db\Sql\Select implements \IteratorAggregate {
     private $adapter;
 
-    public function __construct($adapter) {
+    public function __construct(\Zend\Db\Adapter\Adapter $adapter) {
         $this->adapter = $adapter;
         parent::__construct();
     }

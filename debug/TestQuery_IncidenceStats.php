@@ -8,6 +8,6 @@ $target = array("dbname"=>new \edinc\Db\Wikiname("enwiki"),
                 "username"=>new \edinc\Db\Username("Test~enwiki")
                 );
 
-$adapter = new \edinc\Db\Adapter($_SERVER["HOME"]."/replica.my.cnf", $target["dbname"]);
+$adapter = new \edinc\Db\Adapter($target["dbname"]);
 $query = new \edinc\IncidenceStats($adapter, $target["username"]);
 ?>
